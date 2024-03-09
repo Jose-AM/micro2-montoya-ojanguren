@@ -1,0 +1,75 @@
+.padre{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.estilo-titulo{
+    font-size: 25px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+.tamano-imagen{
+    width: auto;
+    height: 700px;
+    margin-top: 100px;
+}
+
+.estilo-profile{
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.cajatexto{
+    background-color: #cccccc40;
+    border-color: slategray;
+    border-radius: 30px;
+    width: 100%;
+    padding: 15px;
+    border-width: 0px;
+    margin-bottom: 10px;
+
+}
+
+.cajatexto:focus{
+    outline: 1px solid #000000;
+    box-shadow: 0 0 10px #000000;
+}
+
+.btnform{
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+}
+
+.texto{
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: slategray;
+    margin-top: 5px;
+}
+
+.btnswitch{
+    background-color: darkblue;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+    color: white;
+}
