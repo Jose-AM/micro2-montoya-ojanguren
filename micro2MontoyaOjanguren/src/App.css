@@ -73,3 +73,17 @@
     font-size: 20px;
     color: white;
 }
+
+/* Home.css */
+.home-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+  }
+  
+  .content {
+    flex-grow: 1;
+  }
+  

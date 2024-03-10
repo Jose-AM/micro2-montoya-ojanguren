@@ -2,11 +2,30 @@ import React, { useState } from 'react'
 import ImagenLog from '../assets/pngegglogg.png'
 import ImagenPerf from '../assets/perfpng.png'
 import appFirebase from '../firebase'
-import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth'
-import {getFirestore, collection, addDoc, getDocs, query, where} from 'firebase/firestore'
+import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from 'firebase/auth'
+import {getFirestore, collection, addDoc, getDocs, query, where, doc, getDoc, setDoc} from 'firebase/firestore'
 
+const Provider_Google = new GoogleAuthProvider();
 const auth = getAuth(appFirebase)
 const db = getFirestore();
+
+const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, Provider_Google);
+      const user = result.user;
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (!userDoc.exists()) {
+        await setDoc(doc(db, "users", user.uid), {
+          nombre: user.displayName,
+          correo: user.email,
+          // Puedes agregar más campos aquí si lo necesitas
+        });
+      }
+    } catch (error) {
+      console.error("Error al iniciar sesión con Google: ", error);
+    }
+  };
+  
 
 const Login = () => {
     const [registrando, setRegistrando] = useState(false)
@@ -72,6 +91,8 @@ const Login = () => {
                                             </>
                                         )}
                                         <button className="btnform">{registrando ? "Registrate" : "Inicia sesión"}</button>
+                                        <button className="btnform" onClick={handleGoogleLogin}>Iniciar sesión con Google</button>
+
                                     </form>
                                         <h4 className='texto'>{registrando ? "Si ya tienes cuenta" : "No tienes cuenta"}<button className='btnswitch' onClick={()=>setRegistrando(!registrando)}>{registrando ? "Inicia Sesion" : "Registrate"}</button></h4>
                             </div>
