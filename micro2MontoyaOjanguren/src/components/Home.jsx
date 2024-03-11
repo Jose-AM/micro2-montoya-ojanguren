@@ -1,34 +1,41 @@
 // Home.jsx
-import React, { useState } from 'react'
-import appFirebase from '../firebase'
-import {getAuth,signOut} from 'firebase/auth'
+import React from 'react'
 import VerPerfil from './VerPerfil'
+import { AuthContext } from '../auth/Auth'
+import { useNavigate } from 'react-router'
 
-const auth = getAuth(appFirebase)
+const Home = () => {
+  const [opcionMenu, setOpcionMenu] = React.useState('perfil')
+  const nav = useNavigate()
 
-const Home = ({correoUsuario}) => {
-  const [opcionMenu, setOpcionMenu] = useState('perfil')
+  const { currentUser, onLogout } = React.useContext(AuthContext)
+
+  React.useEffect(() => {
+    if (!currentUser) {
+      nav('/login')
+    }
+  }, [currentUser, nav])
 
   return (
     <div>
-      <h2>Bienvenido Usuario {correoUsuario}</h2>
+      <h2>Bienvenido Usuario {currentUser?.email}</h2>
       <div>
         <button onClick={() => setOpcionMenu('perfil')}>Ver perfil</button>
         <button onClick={() => setOpcionMenu('grupos')}>Buscar grupos</button>
-        <button onClick={() => setOpcionMenu('videojuegos')}>Buscar videojuegos</button>
+        <button onClick={() => setOpcionMenu('videojuegos')}>
+          Buscar videojuegos
+        </button>
       </div>
-      {opcionMenu === 'perfil' && <VerPerfil correoUsuario={correoUsuario} />}
+      {opcionMenu === 'perfil' && <VerPerfil />}
       {opcionMenu === 'grupos' && (
-        <div>
-          {/* Aquí puedes agregar el código para buscar grupos */}
-        </div>
+        <div>{/* Aquí puedes agregar el código para buscar grupos */}</div>
       )}
       {opcionMenu === 'videojuegos' && (
-        <div>
-          {/* Aquí puedes agregar el código para buscar videojuegos */}
-        </div>
+        <div>{/* Aquí puedes agregar el código para buscar videojuegos */}</div>
       )}
-      <button className='btn btn-primary'onClick={() => signOut(auth)}>Logout</button>
+      <button className="btn btn-primary" onClick={onLogout}>
+        Logout
+      </button>
     </div>
   )
 }
