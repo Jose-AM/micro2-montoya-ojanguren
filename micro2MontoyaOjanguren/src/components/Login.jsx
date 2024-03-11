@@ -35,6 +35,7 @@ const handleGoogleLogin = async (nav) => {
       await setDoc(doc(db, 'users', user.uid), {
         nombre: user.displayName,
         correo: user.email,
+        membresias: [],
         // Puedes agregar más campos aquí si lo necesitas
       })
     }
@@ -88,6 +89,7 @@ const Login = () => {
           apellido: apellido,
           username: username,
           videojuego_favorito: videojuego_favorito,
+          membresias: []
         })
       } catch (error) {
         alert('El correo ya está registrado o la contraseña es muy corta')
@@ -96,7 +98,7 @@ const Login = () => {
       try {
         await signInWithEmailAndPassword(auth, correo, password)
       } catch (error) {
-        alert('El correo o la contraseña son incorrectos')
+        // alert('El correo o la contraseña son incorrectos')
       }
     }
   }
