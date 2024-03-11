@@ -20,10 +20,10 @@ const Home = () => {
 
     let newClubs = []
     snapshot.docs.map((club) => {
-      const { ID, descripcion, nombre, videojuegos } =
+      const { descripcion, nombre, videojuegos } =
         club._document.data.value.mapValue.fields
       const newClub = {
-        id: ID.stringValue,
+        id: club.id,
         descripcion: descripcion.stringValue,
         nombre: nombre.stringValue,
       }

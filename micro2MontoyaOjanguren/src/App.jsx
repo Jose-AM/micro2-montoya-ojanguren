@@ -11,7 +11,7 @@ import './App.css'
 import Login from './components/Login'
 import Home from './components/Home'
 import { Routes, Route } from 'react-router'
-import Clubs from './components/Club'
+import ClubPage from './components/ClubPage'
 
 const data_videojuegos = [
   {
@@ -239,7 +239,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/videogames" element={<div>Video juegos</div>} />
-      <Route path="/clubs" element={<Clubs />} />
+      <Route path="/clubs/:id" element={<ClubPage />} />
       <Route path="/profile" element={<div>perfil</div>} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<div>Not found</div>} />
