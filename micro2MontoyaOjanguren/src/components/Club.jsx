@@ -1,29 +1,31 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { getFirestore, updateDoc, doc, getDoc } from 'firebase/firestore'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
 import { AuthContext } from '../auth/Auth'
 import { useNavigate } from 'react-router'
 
 const db = getFirestore()
 
+export const belongs = async (currentUser, item) => {
+  console.log(item)
+  const userRef = doc(db, 'users', currentUser.uid)
+  const userDoc = await getDoc(userRef)
+  const fields = userDoc._document.data.value.mapValue.fields
+  const membresias = fields.membresias
+  if (membresias.arrayValue.values) {
+    const isMember = membresias.arrayValue.values.map(
+      (memb) => memb.stringValue === item.id,
+    )
+    return isMember[0]
+  }
+  return false
+}
+
 function Club({ item }) {
   const { currentUser } = React.useContext(AuthContext)
 
-  const belongs = async () => {
-    const userRef = doc(db, 'users', currentUser.uid)
-    const userDoc = await getDoc(userRef)
-    const fields = userDoc._document.data.value.mapValue.fields
-    const membresias = fields.membresias
-    if (membresias.arrayValue.values) {
-      const isMember = membresias.arrayValue.values.map(
-        (memb) => memb.stringValue === item.id,
-      )
-      return isMember[0]
-    }
-    return false
-  }
   const [belongsTo, setBelongsTo] = React.useState(() => {
-    belongs().then((res) => setBelongsTo(res))
+    belongs(currentUser, item).then((res) => setBelongsTo(res))
   })
 
   const navigate = useNavigate()

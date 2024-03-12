@@ -9,8 +9,10 @@ import {
   where,
   getDocs,
   collection,
+  updateDoc,
 } from 'firebase/firestore'
 import { AuthContext } from '../auth/Auth'
+import { belongs } from './Club'
 
 const db = getFirestore()
 
@@ -18,7 +20,57 @@ function ClubPage() {
   const { id } = useParams()
   const { currentUser } = React.useContext(AuthContext)
 
-  
+  const handleClick = async () => {
+    const userRef = doc(db, 'users', currentUser.uid)
+    const userDoc = await getDoc(userRef)
+    const fields = userDoc._document.data.value.mapValue.fields
+    const membresias = fields.membresias
+
+    // Si no tiene ninguna membresia
+    if (Object.keys(membresias?.arrayValue).length === 0) {
+      await updateDoc(userRef, {
+        membresias: [id],
+      })
+      alert(`Te has unido a ${club.nombre}`)
+      setIsMember(true)
+      return
+    }
+
+    const isAlreadySubscribed = membresias.arrayValue.values.find(
+      (memb) => memb.stringValue === id,
+    )
+
+    // Si ya pertenece al club
+    if (isAlreadySubscribed) {
+      const newSuscriptions = membresias.arrayValue.values.filter(
+        (memb) => memb.stringValue !== id,
+      )
+      const normalized = newSuscriptions.map((memb) => memb.stringValue)
+      await updateDoc(userRef, {
+        membresias: normalized,
+      })
+      alert(`Has dejado de ser parte de ${club.nombre}`)
+      setIsMember(false)
+      return
+    }
+    const oldSuscriptions = membresias.arrayValue.values.map(
+      (memb) => memb.stringValue,
+    )
+
+    // Caso en que no pertenece al club
+    const nueva = [...oldSuscriptions, id]
+    try {
+      await updateDoc(userRef, {
+        membresias: nueva,
+      })
+      alert(`Te has unido a ${club.nombre}`)
+      setIsMember(true)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      return
+    }
+  }
 
   const nav = useNavigate()
 
@@ -28,6 +80,8 @@ function ClubPage() {
     nombre: '',
     videojuegos: [],
   })
+
+  const [isMember, setIsMember] = React.useState(false)
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -60,9 +114,11 @@ function ClubPage() {
         nombre: nombre.stringValue,
         videojuegos: videos,
       })
+      const isMemberResult = await belongs(currentUser, clubDoc)
+      setIsMember(isMemberResult)
     }
     fetchData()
-  }, [])
+  }, [id, currentUser])
 
   return (
     <>
@@ -80,6 +136,9 @@ function ClubPage() {
       >
         <h1>{club?.nombre}</h1>
         <p>{club?.descripcion}</p>
+        <button onClick={handleClick}>{`${
+          isMember ? 'Dejar el Club' : 'Unirse al club'
+        }`}</button>
         <p>Video juegos</p>
         <div
           style={{
