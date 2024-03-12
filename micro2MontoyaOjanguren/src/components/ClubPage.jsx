@@ -123,7 +123,9 @@ function ClubPage() {
   return (
     <>
       <div>
-        <button onClick={returnToHome}>Regresar</button>
+        <button className="btn btn-secondary" onClick={returnToHome}>
+          Regresar
+        </button>
       </div>
       <div
         style={{
@@ -136,10 +138,17 @@ function ClubPage() {
       >
         <h1>{club?.nombre}</h1>
         <p>{club?.descripcion}</p>
-        <button onClick={handleClick}>{`${
-          isMember ? 'Dejar el Club' : 'Unirse al club'
-        }`}</button>
-        <p>Video juegos</p>
+        <button
+          className={`btn ${isMember ? 'btn-danger' : 'btn-primary'}`}
+          onClick={handleClick}
+        >{`${isMember ? 'Dejar el Club' : 'Unirse al club'}`}</button>
+        <h3
+          style={{
+            marginTop: '1rem',
+          }}
+        >
+          Lista de Videojuegos
+        </h3>
         <div
           style={{
             display: 'grid',

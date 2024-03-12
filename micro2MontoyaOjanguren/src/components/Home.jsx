@@ -43,16 +43,6 @@ const Home = () => {
     fecthClubs()
   }, [currentUser, nav])
 
-  const navTo = (e) => {
-    const ROUTES = {
-      profile: '/profile',
-      clubs: '/clubs',
-      videogames: '/videogames',
-    }
-
-    nav(`${ROUTES[e.target.name]}`)
-  }
-
   if (loading) {
     return (
       <div
@@ -88,14 +78,17 @@ const Home = () => {
           marginTop: '1rem',
         }}
       >
-        <h2
-          style={{
-            color: 'white',
-          }}
-        >
-          Bienvenido Usuario {currentUser?.email}
+        <h2 style={{ color: 'white' }}>
+          Bienvenido {currentUser?.displayName}
         </h2>
-        <button className="btn btn-primary" onClick={onLogout}>
+        <button
+          name="profile"
+          className="btn btn-primary"
+          onClick={() => nav('/profile')}
+        >
+          Ver Perfil
+        </button>
+        <button className="btn btn-danger" onClick={onLogout}>
           Logout
         </button>
       </div>

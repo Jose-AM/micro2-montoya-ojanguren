@@ -107,3 +107,64 @@
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
+
+.btn-profile {
+    background: transparent;
+    text-decoration: none;
+    border: none;
+}
+
+.profile-title {
+    color: white;
+}
+
+.profile-title:hover{
+    color: #ffffffa9;
+    scale: 102%;
+    transition: all;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info {
+    background-color: #fff;
+    padding:2rem;
+    margin:2rem;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+    width: 400px;
+}
+
+.info > label {
+    margin: .5rem 0;
+}
+
+.info > input {
+    border-radius: .5rem;
+    text-decoration: none;
+    padding: .5rem;
+}
+
+.info > button {
+    margin-top: 1.5rem;
+    background-color: darkblue;
+    padding: .5rem;
+    border: none;
+    border-radius: 1rem;
+    width: 100%;
+    font-size: 20px;
+    color: white;
+}
+
+.back-btn {
+    
+}

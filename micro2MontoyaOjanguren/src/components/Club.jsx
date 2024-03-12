@@ -10,23 +10,18 @@ export const belongs = async (currentUser, item) => {
   console.log(item)
   const userRef = doc(db, 'users', currentUser.uid)
   const userDoc = await getDoc(userRef)
-  const fields = userDoc._document.data.value.mapValue.fields
-  const membresias = fields.membresias
-  if (membresias.arrayValue.values) {
-    const isMember = membresias.arrayValue.values.map(
-      (memb) => memb.stringValue === item.id,
-    )
-    return isMember[0]
-  }
-  return false
+  const { membresias } = userDoc.data()
+  return membresias.includes(item.id)
 }
 
 function Club({ item }) {
   const { currentUser } = React.useContext(AuthContext)
 
-  const [belongsTo, setBelongsTo] = React.useState(() => {
-    belongs(currentUser, item).then((res) => setBelongsTo(res))
-  })
+  const [belongsTo, setBelongsTo] = React.useState()
+
+  React.useEffect(() => {
+    setBelongsTo(belongs(currentUser, item).then((res) => setBelongsTo(res)))
+  }, [item, currentUser])
 
   const navigate = useNavigate()
 
